@@ -5,19 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "delitos")
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Delito {
+public class Delito implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +24,20 @@ public class Delito {
 
     @Column
     String descripcion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuarios_id")
+    Usuario usuario;
 }
+/*
+CREATE TABLE delitos (
+    id int auto_increment not null,
+    nombre varchar(255) not null,
+    descripcion varchar(255) null,
+    usuarios_id int not null,
+    PRIMARY KEY(id),
+    FOREIGN KEY (usuarios_id) REFERENCES usuarios(id)
+);
+
+
+ */

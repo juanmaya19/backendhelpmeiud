@@ -5,12 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -18,7 +15,7 @@ import javax.persistence.Column;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role {
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +26,8 @@ public class Role {
 
     @Column
     String descripcion;
+
+    // si quiero hacer la relación bidireccional: opcional
+    @ManyToMany(mappedBy = "roles")
+    List<Usuario> usuarios;
 }
