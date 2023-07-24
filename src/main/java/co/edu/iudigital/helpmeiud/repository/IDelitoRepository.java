@@ -10,5 +10,5 @@ import java.util.List;
 public interface IDelitoRepository
         extends JpaRepository<Delito, Long> {
 
-    List<Delito> findByNombre(String nombre);
+    List<Delito> findByNombre(String nombre);// Spring Data JPA
 }

@@ -14,8 +14,9 @@ import javax.validation.constraints.NotNull;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DelitoDTORequest {
 
-    @NotNull(message = "Nombre no puede ser nulo")
-    @NotEmpty(message = "Nombre no puede ser vacio")
+
+    @NotNull(message = "Nombre es obligatorio")
+    @NotEmpty(message = "Nombre es obligatorio")
     String nombre;
 
     String descripcion;

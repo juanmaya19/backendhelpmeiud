@@ -3,7 +3,9 @@ package co.edu.iudigital.helpmeiud.service.impl;
 import co.edu.iudigital.helpmeiud.dto.request.DelitoDTORequest;
 import co.edu.iudigital.helpmeiud.dto.response.DelitoDTO;
 import co.edu.iudigital.helpmeiud.model.Delito;
+import co.edu.iudigital.helpmeiud.model.Usuario;
 import co.edu.iudigital.helpmeiud.repository.IDelitoRepository;
+import co.edu.iudigital.helpmeiud.repository.IUsuarioRepository;
 import co.edu.iudigital.helpmeiud.service.iface.IDelitoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class DelitoServiceImpl implements IDelitoService {
     private IDelitoRepository delitoRepository;
+    private IUsuarioRepository usuarioRepository;
 
     @Autowired // Inyección de Dependencias por constructor
-    public DelitoServiceImpl(IDelitoRepository delitoRepository){
+    public DelitoServiceImpl(IDelitoRepository delitoRepository,
+                             IUsuarioRepository usuarioRepository){
         this.delitoRepository = delitoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -41,9 +47,24 @@ public class DelitoServiceImpl implements IDelitoService {
         return null;
     }
 
+    @Transactional
     @Override
     public DelitoDTO guardarDelito(DelitoDTORequest delitoDTORequest) {
-        return null;
+        Delito delito = new Delito();
+        delito.setNombre(delitoDTORequest.getNombre());
+        delito.setDescripcion(delitoDTORequest.getDescripcion());
+        Optional<Usuario> usuarioOptional = usuarioRepository
+                .findById(delitoDTORequest.getUsuarioId());
+        if(!usuarioOptional.isPresent()){
+            return null;
+        }
+        delito.setUsuario(usuarioOptional.get());
+        delito = delitoRepository.save(delito);
+        return DelitoDTO.builder()
+                .id(delito.getId())
+                .nombre(delito.getNombre())
+                .descripcion(delito.getDescripcion())
+                .build();
     }
 
     @Override
