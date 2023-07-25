@@ -15,7 +15,6 @@ public class CasoDTO {
     Long id;
 
     @JsonProperty("fecha_hora")
-    @NotNull(message = "fecha Hora es obligatoria")
     LocalDateTime fechaHora;
 
     Float latitud;
